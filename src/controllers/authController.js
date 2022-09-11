@@ -5,15 +5,15 @@ import db from "../database/db.js";
 
 export async function signUp(req, res) {
 	const { email, name, password } = req.body;
-	const invalidEmail = await db.collection("users").findOne({ email: email });
 	const validation = loginSchema.validate({ name });
+	const user = res.locals.user;
 
 	if (validation.error) {
 		console.log(validation.error.message);
 		return res.sendStatus(422);
 	}
 
-	if (invalidEmail) {
+	if (user) {
 		return res.sendStatus(409);
 	}
 
@@ -30,9 +30,9 @@ export async function signUp(req, res) {
 }
 
 export async function signIn(req, res) {
-	const { email, password } = req.body;
+	const { password } = req.body;
+	const user = res.locals.user;
 	try {
-		const user = await db.collection("users").findOne({ email });
 		if (user && bcrypt.compareSync(password, user.password)) {
 			const token = uuid();
 			await db.collection("sessions").insertOne({ userId: user._id, token });

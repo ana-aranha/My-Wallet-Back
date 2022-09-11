@@ -3,8 +3,11 @@ import {
 	GetTransactions,
 	CreateTransaction,
 } from "../controllers/transactionsController.js";
+import { validateSession } from "../middlewares/sessionValidationMiddleware.js";
 
 const router = express.Router();
+
+router.use(validateSession);
 
 router.get("/transactions", GetTransactions);
 
