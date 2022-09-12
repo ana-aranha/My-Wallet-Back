@@ -13,7 +13,7 @@ export async function GetTransactions(req, res) {
 				ObjectId(el.userId).toString() === ObjectId(session.userId).toString()
 			);
 		});
-		res.send(filteredTransactions);
+		res.send(filteredTransactions.reverse());
 	} catch (err) {
 		console.error(err);
 		res.sendStatus(500);
