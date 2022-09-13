@@ -14,6 +14,4 @@ router.get("/transactions", GetTransactions);
 
 router.post("/transactions/:type", CreateTransaction);
 
-router.delete("transactions/ID_TRANSACTION", DeleteTransactions);
-
 export default router;
