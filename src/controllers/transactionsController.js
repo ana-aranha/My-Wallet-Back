@@ -49,3 +49,25 @@ export async function CreateTransaction(req, res) {
 		res.sendStatus(500);
 	}
 }
+
+export async function DeleteTransactions(req, res) {
+	try {
+		const id = req.params.ID_TRANSACTION;
+		const session = res.locals.session;
+		const transaction = await db
+			.collection("transactions")
+			.findOne({ _id: new ObjectId(id) });
+
+		if (
+			ObjectId(transaction.userId).toString() !==
+			ObjectId(session._id).toString()
+		) {
+			return res.sendStatus(401);
+		}
+
+		await db.collection("transactions").deleteOne({ _id: new ObjectId(id) });
+		res.sendStatus(200);
+	} catch (error) {
+		res.sendStatus(404);
+	}
+}
